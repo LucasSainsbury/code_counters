@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Counter</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #count { font-size: 48px; margin: 20px; }
+    button { font-size: 20px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>🎯 Page Counter</h1>
+  <div id="count">Loading...</div>
+  <button onclick="incrementCounter()">+10</button>
+
+  <script>
+    const username = "LucasSainsbury";
+    const repo = "code_counters";
+    const filePath = "counter.txt";
+
+    async function getCounter() {
+      const res = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filePath}`);
+      const data = await res.json();
+      const content = atob(data.content);
+      window.counterSha = data.sha;
+      document.getElementById("count").innerText = content.trim();
+    }
+
+    async function incrementCounter() {
+      const countElem = document.getElementById("count");
+      let count = parseInt(countElem.innerText) || 0;
+      count = count + 10;
+
+      const updated = btoa(count.toString());
+      await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filePath}`, {
+        method: "PUT",
+        headers: {
+          //"Authorization": `token ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: "Update counter",
+          content: updated,
+          sha: window.counterSha
+        })
+      });
+      countElem.innerText = count;
+      window.counterSha = null;
+      getCounter();
+    }
+
+    getCounter();
+  </script>
+</body>
+</html>
