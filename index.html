@@ -15,12 +15,14 @@
       flex-direction: column;
       align-items: center;
       padding: 60px 20px;
+      overflow-x: hidden;
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 40px;
       text-align: center;
+      z-index: 1;
     }
 
     .bar-container {
@@ -55,32 +57,93 @@
       color: white;
     }
 
+    .push-section {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .push-button {
+      background: #ff4b2b;
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .push-button:hover {
+      transform: scale(1.1);
+    }
+
+    .push-button:active {
+      transform: scale(0.95) rotate(-2deg);
+    }
+
+    .push-count {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #ffd;
+    }
+
+    .shine {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shineMove 6s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes shineMove {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
     footer {
       margin-top: 60px;
       font-size: 0.9rem;
       color: rgba(255,255,255,0.5);
+      z-index: 1;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎯 Code Counters</h1>
+  <div class="shine"></div>
+
+  <h1>🎯 Competition Code Counter</h1>
 
   <div class="bar-container">
-    <div class="label">Lucas Score</div>
+    <div class="label">Lucas Code Count</div>
     <div class="bar-bg">
       <div class="bar-fill" id="barA">0</div>
     </div>
   </div>
 
   <div class="bar-container">
-    <div class="label">Roksana Score</div>
+    <div class="label">Roksana Code Count</div>
     <div class="bar-bg">
       <div class="bar-fill" id="barB">0</div>
     </div>
   </div>
 
-  <footer>Built with ❤️ by Lucas</footer>
+  <div class="push-section">
+    <button class="push-button" onclick="incrementPush()">Push Me!</button>
+    <div class="push-count" id="pushCount">Pushes: 0</div>
+  </div>
+
+  <footer>Built with ❤️ by Lucas and Chatgbt</footer>
 
   <script>
     // ✅ MANUALLY UPDATE THESE COUNTS
@@ -97,6 +160,13 @@
 
     barA.textContent = counterA.toLocaleString();
     barB.textContent = counterB.toLocaleString();
+
+    // Push Button Counter (for fun!)
+    let pushes = 0;
+    function incrementPush() {
+      pushes++;
+      document.getElementById('pushCount').textContent = 'Pushes: ' + pushes;
+    }
   </script>
 
 </body>
